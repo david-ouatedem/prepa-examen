@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prepa_examen/l10n/app_localizations.dart';
 import 'package:prepa_examen/screens/account_screen.dart';
 import 'package:prepa_examen/screens/home_screen.dart';
 import 'package:prepa_examen/screens/tutors_screen.dart';
@@ -14,13 +15,6 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(title: "Home"),
-    TutorsScreen(),
-    UploadScreen(),
-    AccountScreen(),
-  ];
-
   void _onNavBarTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -29,20 +23,37 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
+    // Get localized strings
+    final l10n = AppLocalizations.of(context)!;
+
+    final List<Widget> screens = [
+      HomeScreen(title: l10n.homeTitle),
+      const TutorsScreen(),
+      const UploadScreen(),
+      const AccountScreen(),
+    ];
+
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onNavBarTapped,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.groups), label: "Tutors"),
-          NavigationDestination(icon: Icon(Icons.upload_file), label: "Upload"),
+        destinations: [
+          NavigationDestination(icon: const Icon(Icons.home), label: l10n.home),
           NavigationDestination(
-              icon: Icon(Icons.account_circle), label: "Account"),
+            icon: const Icon(Icons.groups),
+            label: l10n.tutors,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.upload_file),
+            label: l10n.upload,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.account_circle),
+            label: l10n.account,
+          ),
         ],
       ),
     );
   }
-
 }
