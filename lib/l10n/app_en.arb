@@ -8,5 +8,6 @@
   "welcome": "Welcome",
   "settings": "Settings",
   "language": "Language",
-  "homeTitle": "Exam papers"
+  "homeTitle": "Exam papers",
+  "filter": "Filter"
 }

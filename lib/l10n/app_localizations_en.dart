@@ -34,4 +34,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeTitle => 'Exam papers';
+
+  @override
+  String get filter => 'Filter';
 }

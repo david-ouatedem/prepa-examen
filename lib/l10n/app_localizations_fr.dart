@@ -34,4 +34,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homeTitle => 'Documents d\'examen';
+
+  @override
+  String get filter => 'Filtre';
 }

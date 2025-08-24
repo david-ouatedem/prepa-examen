@@ -8,5 +8,6 @@
   "welcome": "Bienvenue",
   "settings": "Paramètres",
   "language": "Langue",
-  "homeTitle": "Documents d'examen"
+  "homeTitle": "Documents d'examen",
+  "filter": "Filtre"
 }
