@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:prepa_examen/common/ui/app_badge.dart';
 import 'package:prepa_examen/common/ui/app_button.dart';
 import 'package:prepa_examen/common/ui/exam_doc_grid_card.dart';
+import 'package:prepa_examen/common/ui/sheet_widget.dart';
 import 'package:prepa_examen/common/ui/tab_switch.dart';
 import 'package:prepa_examen/l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:prepa_examen/modules/exam_papers/ui/widgets/filter_exam_docs_form.dart';
 
 import '../common/ui/exam_doc_list_item.dart';
 
@@ -43,9 +45,11 @@ class _MyHomeScreenState extends State<HomeScreen> {
             AppButton(
               label: l10n.filter,
               icon: Icons.filter_list,
-              onPressed: () {
-                print("Filter button pressed");
-              },
+              onPressed: () => SheetWidget.show(
+                context: context,
+                title: 'Filter exam papers',
+                child: const FilterExamDocsForm(),
+              ),
             ),
             const SizedBox(height: 16),
             Wrap(
