@@ -13,7 +13,7 @@ class FilterExamDocsForm extends StatefulWidget {
 
 class _FilterExamDocsFormState extends State<FilterExamDocsForm> {
   String? selectedExam;
-  String? selectedType;
+  String? selectedSpeciality;
   String? selectedSubject;
   String? selectedYear;
 
@@ -54,9 +54,9 @@ class _FilterExamDocsFormState extends State<FilterExamDocsForm> {
 
         InputSelectField(
           label: 'Speciality',
-          value: selectedType,
+          value: selectedSpeciality,
           items: specialities,
-          onChanged: (value) => setState(() => selectedType = value),
+          onChanged: (value) => setState(() => selectedSpeciality = value),
         ),
         const SizedBox(height: 16),
 
@@ -117,15 +117,15 @@ class _FilterExamDocsFormState extends State<FilterExamDocsForm> {
     return selectedSubject != null ||
         selectedExam != null ||
         selectedYear != null ||
-        selectedType != null;
+        selectedSpeciality != null;
   }
 
   void _submitForm() {
     Navigator.pop(context, {
       'subject': selectedSubject,
-      'level': selectedExam,
+      'exam': selectedExam,
       'year': selectedYear,
-      'type': selectedType,
+      'speciality': selectedSpeciality,
     });
   }
 }

@@ -22,6 +22,37 @@ class HomeScreen extends StatefulWidget {
 class _MyHomeScreenState extends State<HomeScreen> {
   int _currentTabIndex = 0;
 
+  String? _selectedExam;
+  String? _selectedSpeciality;
+  String? _selectedSubject;
+  String? _selectedYear;
+
+  Future<void> _openFilterSheet() async {
+    final result = await SheetWidget.show(
+      context: context,
+      title: 'Filter exam papers',
+      child: const FilterExamDocsForm(),
+    );
+
+    if (result != null && mounted) {
+      setState(() {
+        _selectedExam = result['exam'];
+        _selectedSpeciality = result['speciality'];
+        _selectedSubject = result['subject'];
+        _selectedYear = result['year'];
+      });
+    }
+  }
+
+  void _clearAllFilter(){
+    setState(() {
+      _selectedExam = null;
+      _selectedSpeciality = null;
+      _selectedSubject = null;
+      _selectedYear = null;
+    });
+  }
+
   void _setCurrentTabIndex(int index) {
     setState(() {
       _currentTabIndex = index;
@@ -31,6 +62,13 @@ class _MyHomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    bool isAnyFilterValueAvailable =
+        (_selectedExam != null && _selectedExam!.isNotEmpty) ||
+        (_selectedSpeciality != null && _selectedSpeciality!.isNotEmpty) ||
+        (_selectedSubject != null && _selectedSubject!.isNotEmpty) ||
+        (_selectedYear != null && _selectedYear!.isNotEmpty);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -42,24 +80,38 @@ class _MyHomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppButton(
-              label: l10n.filter,
-              icon: Icons.filter_list,
-              onPressed: () => SheetWidget.show(
-                context: context,
-                title: 'Filter exam papers',
-                child: const FilterExamDocsForm(),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppButton(
+                  label: l10n.filter,
+                  icon: Icons.filter_list,
+                  onPressed: _openFilterSheet,
+                ),
+                isAnyFilterValueAvailable ?
+                AppButton(
+                  label: "Clear filter",
+                  icon: Icons.clear_all,
+                  onPressed: _clearAllFilter,
+                ) : const SizedBox.shrink(),
+              ],
             ),
-            const SizedBox(height: 16),
+
+            isAnyFilterValueAvailable
+                ? const SizedBox(height: 16)
+                : const SizedBox.shrink(),
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: const [
-                AppBadge(label: "Exam", value: "BAC"),
-                AppBadge(label: "Speciality", value: "BAGN"),
-                AppBadge(label: "Subject", value: "Mathematics paper 2"),
-                AppBadge(label: "Year", value: "2020"),
+              children: [
+                if (_selectedExam != null)
+                  AppBadge(label: "Exam", value: _selectedExam!),
+                if (_selectedSpeciality != null)
+                  AppBadge(label: "Speciality", value: _selectedSpeciality!),
+                if (_selectedSubject != null)
+                  AppBadge(label: "Subject", value: _selectedSubject!),
+                if (_selectedYear != null)
+                  AppBadge(label: "Year", value: _selectedYear!),
               ],
             ),
             const SizedBox(height: 16),
@@ -95,10 +147,10 @@ class _MyHomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
-                            child: ExamDocListItem(
-                              fileName: "Math Paper ${index + 1}",
-                              credits: 10,
-                            )
+                          child: ExamDocListItem(
+                            fileName: "Math Paper ${index + 1}",
+                            credits: 10,
+                          ),
                         );
                       },
                     ),
