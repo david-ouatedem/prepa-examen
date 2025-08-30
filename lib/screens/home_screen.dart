@@ -6,6 +6,8 @@ import 'package:prepa_examen/common/ui/tab_switch.dart';
 import 'package:prepa_examen/l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../common/ui/exam_doc_list_item.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
 
@@ -65,23 +67,38 @@ class _MyHomeScreenState extends State<HomeScreen> {
               },
             ),
             const SizedBox(height: 12),
-            Expanded(
-              child: MasonryGridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ExamDocGridCard(
-                    fileName: index % 3 == 0
-                        ? "Mathematics Paper ${index + 1} Very Long Title That Wraps Multiple Lines And Should Be Fully Visible Without Breaking Layout"
-                        : "Math Paper ${index + 1}",
-                    credits: 10,
-                    imageUrl: "assets/images/image-1.jpg",
-                  );
-                },
-              ),
-            ),
+            _currentTabIndex == 0
+                ? Expanded(
+                    child: MasonryGridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return ExamDocGridCard(
+                          fileName: index % 3 == 0
+                              ? "Mathematics Paper ${index + 1} Very Long Title That Wraps Multiple Lines And Should Be Fully Visible Without Breaking Layout"
+                              : "Math Paper ${index + 1}",
+                          credits: 10,
+                          imageUrl: "assets/images/image-1.jpg",
+                        );
+                      },
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                            child: ExamDocListItem(
+                              fileName: "Math Paper ${index + 1}",
+                              credits: 10,
+                            )
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
