@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:prepa_examen/common/ui/app_badge.dart';
 import 'package:prepa_examen/common/ui/app_button.dart';
+import 'package:prepa_examen/common/ui/exam_doc_grid_card.dart';
+import 'package:prepa_examen/common/ui/tab_switch.dart';
 import 'package:prepa_examen/l10n/app_localizations.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -13,11 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
+  int _currentTabIndex = 0;
 
-  void _incrementCounter() {
+  void _setCurrentTabIndex(int index) {
     setState(() {
-      _counter++;
+      _currentTabIndex = index;
     });
   }
 
@@ -33,7 +36,7 @@ class _MyHomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppButton(
               label: l10n.filter,
@@ -53,11 +56,37 @@ class _MyHomeScreenState extends State<HomeScreen> {
                 AppBadge(label: "Year", value: "2020"),
               ],
             ),
+            const SizedBox(height: 16),
+            TabSwitch(
+              tabs: ["Grid", "List"],
+              selectedTabIndex: _currentTabIndex,
+              onChanged: (index) {
+                _setCurrentTabIndex(index);
+              },
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: MasonryGridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return ExamDocGridCard(
+                    fileName: index % 3 == 0
+                        ? "Mathematics Paper ${index + 1} Very Long Title That Wraps Multiple Lines And Should Be Fully Visible Without Breaking Layout"
+                        : "Math Paper ${index + 1}",
+                    credits: 10,
+                    imageUrl: "assets/images/image-1.jpg",
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
